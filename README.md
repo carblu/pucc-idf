@@ -1,4 +1,4 @@
-<h2>A Role Mining technique based on Bag of Words model</h2>
+<h2>Bag of Words Model for Role Mining</h2>
 
 <div align='justify'>
 The widespread adoption of Role-Based Access Control (RBAC) stems from its flexibility in enforcing and managing security policies across diverse contexts. To accurately reflect organizational security requirements, cardinality constraints are often incorporated into role definition and assignment. However, role mining, the process of generating an RBAC model from existing data, is an NP-hard problem. Consequently, heuristic approaches, which yield approximate solutions, are necessary.
