@@ -5,7 +5,9 @@ The widespread adoption of Role-Based Access Control (RBAC) stems from its flexi
 
 We introduces a novel role mining methodology that leverages the Bag of Words model, a technique commonly used in document representation and knowledge extraction. We present several heuristics and evaluate their performance on standard datasets, employing various metrics and indicators. The results demonstrate that our approach offers improved solutions and a viable alternative for constrained RBAC model generation.
 
-The heuristics were validated using publicly available real-world datasets from HP Labs [1], which are also included in the 'datasets' folder.
+The heuristics were validated using publicly available real-world datasets from HP Labs [1] and datasets derived from data released for 
+the Kaggle competition "Amazon Employee Access Challenge" [2], 
+These datasets are included in the 'datasets' folder.
 
 The complete set of experiments is available in the pdf file Additional Material.pdf.
 </div>
@@ -13,3 +15,7 @@ The complete set of experiments is available in the pdf file Additional Material
 [1] A. Ene, W.G. Horne, N. Milosavljevic, P. Rao, R. Schreiber, and R.E. Tarjan</br>
     Fast exact and heuristic methods for role minimization problems</br>
     ACM SACMAT 2008, pp. 1–10
+
+[2] B. Hamner, kenmonta, W. Cukierski</br>
+    Amazon.com – Employee Access Challenge</br> 
+    https://www.kaggle.com/competitions/amazon-employee-access-challenge/ 
