@@ -10,7 +10,10 @@ datasets = (['datasets/americas_large.txt', 398, 1, 4, 1, 733],
             ['datasets/emea.txt', 34, 1, 1, 9, 554],
             ['datasets/fire1.txt', 64, 1, 9, 1, 617],
             ['datasets/fire2.txt', 10, 1, 3, 2, 590],
-            ['datasets/hc.txt', 14, 1, 6, 1, 45]
+            ['datasets/hc.txt', 14, 1, 6, 1, 45],
+            ['datasets/amazon1.txt', 0, 1, 36, 1, 36],
+            ['datasets/amazon1_b.txt', 0, 1, 36, 1, 36],
+            ['datasets/amazon1_test.txt', 0, 1, 46, 1, 46]  # min-rpu, max-rpu same as min#P, max#P -- min-ppr, max-ppr same as min#P, max#
             )
 
 # dataset number [dataset name, #users, #permissions, max#perm-per-user, max#users-have-perm]
@@ -24,6 +27,24 @@ datasets_2 = (['datasets/americas_large.txt', 3485, 101127, 733, 2812],
               ['datasets/fire2.txt', 325, 590, 590, 298],
               ['datasets/hc.txt', 46, 46, 46, 45]
               )
+
+
+dn = dict()
+dn['customer'] = 'Customer'
+dn['americas_large'] = 'Americas large'
+dn['americas_small'] = 'Americas small'
+dn['apj'] = 'Apj'
+dn['fire1'] = 'Firewall 1'
+dn['fire2'] = 'Firewall 2'
+dn['emea'] = 'Emea'
+dn['domino'] = 'Domino'
+dn['hc'] = 'Healthcare'
+dn['amazon1'] = 'Amazon 1'
+dn['amazon2'] = 'Amazon 2'
+dn['amazon1_b'] = 'Amazon 1 both access'
+dn['synt_6k_24k'] = 'Synthetic 6k users 24k permissions -- both access'
+dn['synt_5k_4k'] = 'Synthetic 5k users 4k permissions -- granted access and operation o4'
+dn['amazon1_test'] = 'UPA from Amazon test.csv'
 
 
 def test_single(dsn, all_heuristics=False):
@@ -52,13 +73,11 @@ def test_all(dataset, mpr, all_heuristics=True, solution=False):
         print('        PUCC_C     ', f'{wsc:>5} {nr:>5} {ua_size:>5} {pa_size:>5}', sol.check_solution())
         if solution: print('ua:', sol._ua, '\n', 'pa', sol._pa)
 
-
         sol = CRM(dataset, mpr)
         sol.mine()
         wsc, nr, ua_size, pa_size = sol.get_wsc()
         print('           CRM     ', f'{wsc:>5} {nr:>5} {ua_size:>5} {pa_size:>5}', sol.check_solution())
         if solution: print('ua:', sol._ua, '\n', 'pa', sol._pa)
-
 
     for matrix in ('upa', 'uncupa'):
         for minimum in ('len', 'idf'):

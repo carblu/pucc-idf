@@ -3,6 +3,7 @@ import random
 import math
 
 
+
 class PUCC_IDF(Mining):
     def __init__(self, dataset, mpr=0, access_matrix='upa', minimum='len', selection='first'):
         super().__init__(dataset)
@@ -17,6 +18,8 @@ class PUCC_IDF(Mining):
 
         # self._flag = True if access_matrix == 'uncupa' else False
 
+        self._compute_idf()
+
         # select a user considering the number or the sum of the idf values
         # of his/her assigned permissions in _matrix
         assert minimum in ('len', 'idf'), 'minimum selection not recognized'
@@ -28,7 +31,7 @@ class PUCC_IDF(Mining):
             self._min = 'idf'
 
         # how to select the permissions
-        assert selection in ('first', 'rnd', 'idf', 'idf_M'), 'Permission selection criterion not valid'
+        assert selection in ('first', 'rnd', 'idf'), 'Permission selection criterion not valid'
         if selection == 'first':
             self._selection = self._first
         elif selection == 'rnd':
@@ -36,13 +39,17 @@ class PUCC_IDF(Mining):
         elif selection == 'idf':
             self._selection = self._idf
 
-        self._compute_idf()
 
     def _compute_idf(self):
         # a permission with a small idf value is assigned to more users
         # than a permission with a higher idf value
         # self._p_IDF = {p: -math.log(len(self._idf_matrix[p]) / len(self._idf_matrix), 2) for p in self._idf_matrix}
         self._p_IDF = {p: -math.log(len(self._idf_matrix[p]) / len(self._unc_users), 2) for p in self._idf_matrix}
+
+	self._sumIDF = dict()
+        for u in self._unc_users:
+            self._sumIDF[u] = sum([self._p_IDF[p] for p in self._matrix[u]])
+
 
     def _first(self, prms):  # first mpr permissions
         return prms if len(prms) <= self._mpr else set(sorted(prms)[:self._mpr])
@@ -51,7 +58,22 @@ class PUCC_IDF(Mining):
         return prms if len(prms) <= self._mpr else set(random.sample(sorted(prms), self._mpr))
 
     def _idf(self, prms):  # mpr permissions with minimum idf
+        if len(prms) <= self._mpr:
+            return prms
+        else:
+            inv_idf = collections.defaultdict(list)
+            for p in prms:
+                inv_idf[self._p_IDF[p]].append(p)
+
+            tmp_prms = list()
+            for idf in sorted(inv_idf):
+                tmp_prms.extend(sorted(inv_idf[idf]))
+
+            return set(tmp_prms[:self._mpr])
+
         return prms if len(prms) <= self._mpr else set(sorted(prms, key=lambda p: self._p_IDF[p])[:self._mpr])
+
+
 
     # A permission with a small idf value is assigned to more users
     # than a permission with a higher idf value. Sorting the permissions
